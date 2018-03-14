@@ -96,11 +96,11 @@ Furthering this, when printing the values of arrayOne[0] and arrayTwo[0] from wi
 
 This suggested that the size of `std::string` and that of `WorkParams` may differ between the library and executable.
 
-#### fPIC
+#### -fPIC
 
 Position independent code was something I'd been exposed to in the past. It had been a required flag when compiling static libraries that were going to be used by a shared library. Reading into PIC it made sense that if there was expectations/references to memory locations in the shared library that these could not be absolute but needed to be relative.
 
-After speaking with the library author, however, they were already adding the -fPIC flag to the shared object creation, and adding it to the g++ -o command did not result in any improvements to the output of `DoWork`.
+After speaking with the library author, however, they were already adding the `-fPIC` flag to the shared object creation, and adding it to the g++ -o command did not result in any improvements to the output of `DoWork`.
 
 #### Different standard library versions
 
@@ -108,7 +108,8 @@ I figured that a change in the standard library could have an impact.
 
 Using `readelf`, the output of the libwork.so and myexec appeared to be using consistent versions of GLIBCXX
 
-```$ readelf -a libmylib.so
+```
+$ readelf -a libmylib.so
 
 Version needs section '.gnu.version_r' contains 2 entries:
  Addr: 0x0000000000000570  Offset: 0x000570  Link: 4 (.dynstr)
@@ -118,7 +119,10 @@ Version needs section '.gnu.version_r' contains 2 entries:
   0x0030:   Name: GLIBCXX_3.4  Flags: none  Version: 2```
 (edited)
 
-```$ readelf -a myexec
+```
+
+```
+$ readelf -a myexec
 
 Version needs section '.gnu.version_r' contains 4 entries:
  Addr: 0x0000000000401d00  Offset: 0x001d00  Link: 6 (.dynstr)
@@ -139,12 +143,14 @@ Version needs section '.gnu.version_r' contains 4 entries:
   0x00e0:   Name: CXXABI_1.3  Flags: none  Version: 7
   0x00f0:   Name: CXXABI_1.3.3  Flags: none  Version: 6
   0x0100:   Name: GLIBCXX_3.4.22  Flags: none  Version: 5
-  0x0110:   Name: GLIBCXX_3.4  Flags: none  Version: 2```
-
+  0x0110:   Name: GLIBCXX_3.4  Flags: none  Version: 2
+```
 
 ldd gave a similar answer, suggesting the libstdc++ shared object was the same: libstdc++.so.6
 
-```$ ldd ../../lib/libcme_hft.so 
+```
+$ ldd ../../lib/libcme_hft.so 
+
 ldd: warning: you do not have execution permission for `../../lib/libcme_hft.so'
     linux-vdso.so.1 (0x00007ffe3dd7b000)
     libstdc++.so.6 => /lib64/libstdc++.so.6 (0x00007fabc41c4000)
@@ -153,7 +159,8 @@ ldd: warning: you do not have execution permission for `../../lib/libcme_hft.so'
     libc.so.6 => /lib64/libc.so.6 (0x00007fabc3875000)
     /lib64/ld-linux-x86-64.so.2 (0x00007fabc474e000)```
 
-```$ ldd ../../cmake-build-debug/signal_outcome
+$ ldd ../../cmake-build-debug/signal_outcome
+
     linux-vdso.so.1 (0x00007ffe14bc4000)
     libpthread.so.0 => /lib64/libpthread.so.0 (0x00007fb8d9ecf000)
     libcme_hft.so => /home/antoine/CLionProjects/signal_outcome/lib/libcme_hft.so (0x00007fb8d9ccc000)
@@ -161,7 +168,8 @@ ldd: warning: you do not have execution permission for `../../lib/libcme_hft.so'
     libm.so.6 => /lib64/libm.so.6 (0x00007fb8d95f0000)
     libgcc_s.so.1 => /lib64/libgcc_s.so.1 (0x00007fb8d93d9000)
     libc.so.6 => /lib64/libc.so.6 (0x00007fb8d8ff6000)
-    /lib64/ld-linux-x86-64.so.2 (0x00007fb8da0ee000)```
+    /lib64/ld-linux-x86-64.so.2 (0x00007fb8da0ee000)
+```
 
 #### sizeof
 
