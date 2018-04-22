@@ -69,6 +69,10 @@ $ xrdb -merge ~/.Xresources
 $ xrandr --dpi 192
 ```
 
+### Sublime + HiDPI
+
+Modify user settings to include `"dpi_scale": 2.0`
+
 ### default terminal 
 
 change the default terminal to gnome-terminal: copy+paste + HiDPi support
