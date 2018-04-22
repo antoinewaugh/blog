@@ -38,7 +38,7 @@ bindsym NAME exec [your command here]
 
 ```
 $ wget mybackground.jpg ~/Pictures/wallpaper.jpg
-$ echo `exec_always feh --bg-scale /home/antoine/Pictures/wallpaper.jpg` >> ~/.config/i3/config
+$ echo 'exec_always feh --bg-scale /home/antoine/Pictures/wallpaper.jpg' >> ~/.config/i3/config
 ```
 
 ### auto-starting applications
