@@ -50,10 +50,7 @@ $ exec_always myapp     # start myapp upon reboot AND reloads of i3 config
 
 ### HiDPI
 
-arandr suggests resolution still at 3840 x 2160
-
-DID run gnome-settings but i'd have thought this would not effect i3??
-DID add the following to ~/.Xresources
+Add the following to ~/.Xresources
 
 ```
 Xft.dpi: 192
@@ -65,6 +62,12 @@ Xft.antialias: 1
 Xft.rgba: rgb
 ```
 
+Merge these changes
+
+```
+$ xrdb -merge ~/.Xresources
+$ xrandr --dpi 192
+```
 
 ### default terminal 
 
@@ -74,5 +77,3 @@ change the default terminal to gnome-terminal: copy+paste + HiDPi support
 bindsym $mod+Return exec gnome-terminal
 ```
 
-????????????
-$ sudo dnf install -y arandr
