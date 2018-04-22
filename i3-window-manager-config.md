@@ -29,13 +29,21 @@ $ vi ~/.i3/config
 ### key bindings
 
 Add your preferred keybindings, for example:
+
+```
+bindsym NAME exec [your command here]
 ```
 
+### wallpaper
+
+```
+$ wget mybackground.jpg ~/Pictures/wallpaper.jpg
+$ echo `exec_always feh --bg-scale /home/antoine/Pictures/wallpaper.jpg` >> ~/.config/i3/config
 ```
 
 ### auto-starting applications
 
 ```
 $ exec myapp            # start myapp upon reboot
-$ exec always myapp     # start myapp upon reboot AND reloads of i3 config
+$ exec_always myapp     # start myapp upon reboot AND reloads of i3 config
 ```
