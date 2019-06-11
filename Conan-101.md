@@ -197,12 +197,12 @@ From https://docs.conan.io/en/latest/mastering/policies.html:  _By default, cona
 
 Users can use the `--build` option to change the default `conan install` behaviour:
 
-    --`build some_package` will build only “some_package”.
-    --`build missing` will build only the missing requires.
-    --`build` will build all requirements from sources.
-    --`build outdated` will try to build from code if the binary is not built with the current recipe or when missing binary package.
-    --`build cascade` will build from code all the nodes with some dependency being built (for any reason). Can be used together with any other build policy. Useful to make sure that any new change introduced in a dependency is incorporated by building again the package.
-    --`build pattern*` will build only the packages with the reference starting with “pattern”.
+    - `build some_package` will build only “some_package”.
+    - `build missing` will build only the missing requires.
+    - `build` will build all requirements from sources.
+    - `build outdated` will try to build from code if the binary is not built with the current recipe or when missing binary package.
+    - `build cascade` will build from code all the nodes with some dependency being built (for any reason). Can be used together with any other build policy. Useful to make sure that any new change introduced in a dependency is incorporated by building again the package.
+    - `build pattern*` will build only the packages with the reference starting with “pattern”.
 
 Authors can specify defaults using the `build_policy` property on the ConanFile class.
 
