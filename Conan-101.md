@@ -81,4 +81,82 @@ test_package
 
 The `conanfile.py` provides the build information for the package, whereas the contents of the `test_package` directory verify if a package has been correctly built.
 
-### 
+To create a new package from a template users can run `conan new Library/Version -t`, alternatively users can write a custom conanfile.py conforming to the following rules: https://docs.conan.io/en/latest/reference/conanfile.html#conanfile-reference 
+
+### Settings
+
+Each `conanfile.py` contains a `settings` attribute:
+
+```
+settings = ["os", "compiler", "build_type"]
+```
+
+The settings field defines the configuration of the different binary packages. 
+
+Conan will necessarily treat a change in settings as a separate binary package. I.e. in the sample above, a change in `build_type` would cause a new binary package to be made.
+
+Settings can be either provided to the package manager upon `conan install` using the `-s settings.name=value` paradigm, or otherwise the environment defaults are used from the `settings.txt`:
+
+```
+
+$ conan profile show default
+
+Configuration for profile default:
+
+[settings]
+os=Linux
+os_build=Linux
+arch=x86_64
+arch_build=x86_64
+compiler=gcc
+compiler.version=7
+compiler.libcxx=libstdc++11
+build_type=Release
+[options]
+[build_requires]
+[env]
+```
+
+Settings are configurable. You can edit, add, remove settings or subsettings in your settings.yml file. See the settings.yml reference: https://docs.conan.io/en/latest/reference/config_files/settings.yml.html#settings-yml
+
+
+### Creating
+
+The `conan create` commands build a recipe into a binary package. If a `test_package` folder exists with a `conanfile.py` then it will automatically run during the `create` process.
+
+```
+conan new Hello/0.1 -t
+conan create . demo/testing
+...
+[ 50%] Building CXX object CMakeFiles/example.dir/example.cpp.o
+[100%] Linking CXX executable bin/example
+[100%] Built target example
+Hello/0.1@demo/testing (test package): Running test()
+Hello World!
+
+```
+
+Under the hood, the `create` command is equivalent to:
+
+```
+conan export . demo/testing
+conan install Hello/0.1@demo/testing --build=Hello
+# package is created now, use test to test it
+conan test test_package Hello/0.1@demo/testing
+
+```
+
+Users can opt to get finer granularity of control by manually calling the underlying `conan build`, `conan export-pkg` etc commands but often this is unnecessary.
+
+More details on the package creation process can be found here: https://docs.conan.io/en/latest/creating_packages/understand_packaging.html
+
+`conan create` and `conan install` take the same command line options, so it is possible to create and test packages for different configurations:
+
+```
+conan create . demo/testing -s build_type=Debug
+conan create . demo/testing -s build_type=Release
+conan create . demo/testing -s build_type=Release -s arch=x64
+```
+
+### Testing
+
