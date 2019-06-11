@@ -160,3 +160,15 @@ conan create . demo/testing -s build_type=Release -s arch=x64
 
 ### Testing
 
+`conan test` allows a `test_package/conanfile.py` to be tested. 
+
+The commands installs dependencies, calls `conan build` and executes the `test()` method.
+
+An example `test()` method is as follows:
+
+```
+    def test(self):
+        if not tools.cross_building(self.settings):
+            os.chdir("bin")
+            self.run(".%sexample" % os.sep)
+```
