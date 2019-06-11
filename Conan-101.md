@@ -204,6 +204,8 @@ Users can use the `--build` option to change the default `conan install` behavio
     --`build cascade` will build from code all the nodes with some dependency being built (for any reason). Can be used together with any other build policy. Useful to make sure that any new change introduced in a dependency is incorporated by building again the package.
     --`build pattern*` will build only the packages with the reference starting with “pattern”.
 
+Authors can specify defaults using the `build_policy` property on the ConanFile class.
+
 ```
  class PocoTimerConan(ConanFile):
      settings = "os", "compiler", "build_type", "arch"
