@@ -32,7 +32,7 @@ bincrafters: https://api.bintray.com/conan/bincrafters/public-conan [Verify SSL:
 
 ```
 
-## Search Server(s)
+### Search Server(s)
 
 Users can search for a package locally:
 
@@ -172,3 +172,44 @@ An example `test()` method is as follows:
             os.chdir("bin")
             self.run(".%sexample" % os.sep)
 ```
+
+### Uploading
+
+Packages can be uploaded to both public and private conan servers.
+
+Recipe authors can upload a `recipe` and optionally, the corresponding `binary packages` for the relevant configurations (see #Settings).
+
+The `conan upload` tool supports the following options:
+- [none]: uploads the package recipe ONLY
+- `--all` uploads the package recipe plus all binary packages
+- `--packages` uploads the explicitly listed packages 
+- `--query` uploads packages matching the user provided query
+
+NB: If a package exists, it will not be re-uploaded unless explicitly forced.
+
+## Build Policy
+
+Authors can specify a build policy controlling whether clients can download pre-packaged binaries, and specify if local building of packages is permitted.
+
+Clients can call `conan install --build` indicating their intent on where the package is built, and depending on the author's restrictions this may be honoured.
+
+From https://docs.conan.io/en/latest/mastering/policies.html:  _By default, conan install command will search for a binary package (corresponding to our settings and defined options) in a remote. If it’s not present the install command will fail._
+
+Users can use the `--build` option to change the default `conan install` behaviour:
+
+    --`build some_package` will build only “some_package”.
+    --`build missing` will build only the missing requires.
+    --`build` will build all requirements from sources.
+    --`build outdated` will try to build from code if the binary is not built with the current recipe or when missing binary package.
+    --`build cascade` will build from code all the nodes with some dependency being built (for any reason). Can be used together with any other build policy. Useful to make sure that any new change introduced in a dependency is incorporated by building again the package.
+    --`build pattern*` will build only the packages with the reference starting with “pattern”.
+
+```
+ class PocoTimerConan(ConanFile):
+     settings = "os", "compiler", "build_type", "arch"
+     requires = "Poco/1.7.8p3@pocoproject/stable" # comma-separated list of requirements
+     generators = "cmake"
+     default_options = {"Poco:shared": True, "OpenSSL:shared": True}
+     build_policy = "always"
+```
+
